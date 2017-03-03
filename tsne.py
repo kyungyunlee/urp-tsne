@@ -110,7 +110,7 @@ def tsne(X = Math.array([]), no_dims = 2, initial_dims = 50, perplexity = 30.0):
 	# Initialize variables
 	X = pca(X, initial_dims).real;
 	(n, d) = X.shape;
-	max_iter = 5000;
+	max_iter = 1000;
 	initial_momentum = 0.5;
 	final_momentum = 0.8;
 	eta = 500;
@@ -167,11 +167,22 @@ def tsne(X = Math.array([]), no_dims = 2, initial_dims = 50, perplexity = 30.0):
 
 
 if __name__ == "__main__":
-	X = Math.loadtxt("MSDtagvalues.txt");
+	X = Math.loadtxt("MTTtagvalues.txt");
 	labels = Math.loadtxt("melontitleid.txt");
-	Y = tsne(X, 3,50);
+	Y = tsne(X, 3,50,20.0);
+	# Y = tsne(X, 2, 50, 20.0);
 	fig = plt.figure()
 	ax = fig.add_subplot(111,projection='3d')
 	ax.scatter(Y[:,0], Y[:,1],Y[:,2],zdir='z', marker='o')
+	# plt.scatter(Y[:,0], Y[:,1],20, labels);
+	# for i in range(50):
+	# 	ax.annotate(labels[i],(Y[:,0][i], Y[:,1][i], Y[:,2][i]))
+
 	plt.show();
+
+	txtfiles = open("3dpositionsMTT.txt","w")
+	for i in range(len(Y[:,0])):
+		txtfiles.write(str(Y[:,0][i]) + ' ' + str(Y[:,1][i]) + ' ' + str(Y[:,2][i]) + '\n')
+
+	txtfiles.close()
 
